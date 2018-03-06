@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decogenerator - v0.1</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <script src="js/jquery-3.2.1.js"></script>
+    <link rel="icon" href="http://placehold.it/30x30">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+
+    <script type="text/javascript">
+        $(window).on('load', function() {
+            $("#preloader #image").fadeOut(); // Usuwamy grafikę ładowania
+            $("#preloader").delay(350).fadeOut("slow"); // Usuwamy diva przysłaniającego stronę
+        });
+
+    </script>
+
+    <link rel="stylesheet" href="css/introjs.min.css">
+</head>
+
+<body>
+    <div id="preloader">
+        <div id="image"></div>
+        <div id="cent">
+            <p>Pliki strony właśnie są przygotowywane do pracy. Już wkrótce stworzysz swój własny transfer.</p>
+            <p>Jeśli korzystasz z Wi-Fi lub twoje łącze Internetowe jest za wolne wczytywanie może potrwać kilka minut.</p>
+        </div>
+    </div>
+    <div class="container">
+        <header class="tohide">
+            <div class="logo">
+                <h1>DecoGenerator</h1>
+                <p>Twórz własne wzory decoupage za darmo!</p>
+            </div>
+            <div class="main-menu">
+                <ul>
+                    <li><a href="#">Strona główna</a></li>
+                    <li><a href="javascript:void(0);" onclick="startIntro();">Pomoc</a></li>
+                    <li><a href="ideas.html">Pomysły</a></li>
+                </ul>
+                <div>
+                    <p></p>
+                </div>
+            </div>
+        </header>
+
+        <main>
+
+            <div class="content">
+                <div class="canvasy">
+                </div>
+            </div>
+
+            <div class="controls">
+
+                <div class="row">
+                    <button id="add" class="big"><i class="fas fa-plus-square"></i> Dodaj warstwę</button>
+                </div>
+               
+                <div class="font">
+                    <label for="yt">Twój tekst lub link do zdjęcia</label>
+                    <textarea type="text" id="yt" value="Twój tekst"></textarea>
+
+                    <p>Wybierz czionkę:</p>
+                    <select class="fonty" id="font">
+                        <option selected class="Arimo">Arimo</option>
+                        <option class="Bellico">Bellico</option>
+                        <option class="GrandHotel">GrandHotel</option>
+                        <option class="GreatVibes">GreatVibes</option>
+                        <option class="Havana">Havana</option>
+                        <option class="Heneczek">Heneczek</option>
+                        <option class="Jaapokki">Jaapokki</option>
+                        <option class="Pacifico">Pacifico</option>
+                        <option class="ScriptinaPro">Scriptina Pro</option>
+                        <option class="Selima">Selima</option>
+                        <option class="SweetSorrow">Sweet Sorrow</option>
+                        <option class="Szwederowo">Szwederowo</option>
+                        <option class="UniSansHeavy">Uni Sans Heavy</option>
+                    </select>
+
+                    <p>Wybierz kolor</p>
+                    <input type="color" id="color">
+                </div>
+                <p>Ustal pozycję aktywnego elementu</p>
+                <div class="position">
+                    <div class="row">
+                        <button id="rotl" data-tooltip="15&deg; w lewo" disabled><i class="fas fa-undo-alt"></i></button>
+                        <button id="up" data-tooltip="Element w górę"><i class="fas fa-caret-up"></i></button>
+                        <button id="rotr" data-tooltip="15&deg; w prawo" disabled><i class="fas fa-redo-alt"></i></button>
+                    </div>
+                    <div class="row">
+                        <button id="left" data-tooltip="Element w lewo"><i class="fas fa-caret-left"></i></button>
+                        <button id="center" data-tooltip="Wyśrodkuj element"><i class="far fa-dot-circle"></i></button>
+                        <button id="right" data-tooltip="Element w prawo"><i class="fas fa-caret-right"></i></button>
+                    </div>
+                    <div class="row">
+                        <button id="scaleup" data-tooltip="Powiększ"><i class="fas fa-plus"></i></button>
+                        <button id="down" data-tooltip="Element w dół"><i class="fas fa-caret-down"></i></button>
+                        <button id="scaledown" data-tooltip="Zmniejsz"><i class="fas fa-minus"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="elements"></div>
+
+        </main>
+
+        <div id="generated">
+
+            <div class="image">
+            </div>
+
+            <div class="todo">
+                <button id="wygeneruj" class="btndark">Podgląd</button>
+                <ul>
+                    <li><a id="download" class="btn btndark">Zapisz na swoim komputerze</a></li>
+                    <!--                    <li><a id="share" class="btn btndark">Udostepnij i pochwal się swoją pracą</a></li>-->
+                    <li id="shared"></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/maker.js"></script>
+    <script type="text/javascript" src="js/h2c.min.js"></script>
+    <script type="text/javascript" src="js/intro.min.js"></script>
+
+    <script type="text/javascript">
+        function startIntro() {
+            $("#add").click(function() {
+                intro.goToStepNumber(5);
+            });
+            var intro = introJs();
+            intro.setOption('showBullets', false);
+            intro.setOption('nextLabel', "Dalej");
+            intro.setOption('prevLabel', "Wróć");
+            intro.setOption('skipLabel', "Pomiń");
+            intro.setOption('doneLabel', "Zakończ");
+            intro.setOption('tooltipPosition', "left");
+            intro.setOption('scrollToElement', false);
+            intro.setOptions({
+                steps: [{
+                        intro: "Witaj w krótkim oprowadzeniu po stronie! Klikij Następny aby przejść do kolejnej podpowiedzi."
+                    },
+                    {
+                        element: document.querySelector('main'),
+                        intro: "To jest główne okno edytora."
+                    },
+                    {
+                        element: document.querySelectorAll('.controls')[0],
+                        intro: "To jest panel, w którym znajdują się elementy do edycji warstw.",
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelector('#add'),
+                        intro: 'Dzięki temu przyciskowi możesz dodać nową warstwę. Kliknij go teraz!',
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelector('.elements')[0],
+                        intro: "Twoja warstwa została dodana do listy. W niej znajdują się dwa przyciski.</br>-Przycisk z cyfrą uaktywnia warstwę, którą chcesz edytować.</br>-Ikona kosza usuwa tą warstwę.",
+                        position: 'left'
+                    },
+                    {
+                        intro: "Teraz dodamy tekst do naszej warstwy"
+                    }
+                ]
+            });
+            intro.start();
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decogenerator - v0.1</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.2.1.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+</head>
+
+<body>
+    <div id="preloader"><div id="image"></div></div>  
+    <div class="container">
+        <header class="tohide">
+            <div class="logo">
+                <h1>DecoGenerator</h1>
+                <p>Twórz własne wzory decoupage za darmo!</p>
+            </div>
+            <div class="main-menu">
+                <ul>
+                    <li><a href="index.html">Strona główna</a></li>
+                    <li><a href="#">Pomysły</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <main class="gall">
+
+            <div id="gallery"></div>
+
+        </main>
+
+    </div>
+
+
+    <script>
+        $(document).ready(function() {
+            var perShow = 20;
+            var onScroll = 20;
+
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://api.imgur.com/3/album/B86sw/images",
+                "method": "GET",
+                "headers": {
+                    "Authorization": "Client-ID afaee7435584e53"
+                }
+            };
+
+
+            $.ajax(settings).done(function(response) {
+
+                //Generate gallery
+                var gallery = $("#gallery");
+                var html = "";
+
+                if (Object.keys(response.data).length == 0) {
+                    gallery.append("<p>Brak zdjęć. Spróbuj odświeżyć stronę. Jeśli problem się powtórzy skontaktuj się z administratorem strony</p>");
+                }
+                $(".col").fadeOut();
+                for (var i = 0; i <= Object.keys(response.data).length-1; i++) {
+                    html += "<div class='col' style='display:none'>";
+                        html += "<div class='image'>";
+                            html += "<a href='";
+                            html += response.data[i].link;
+                            html += "' download>";
+                            html += "<img src='";
+                            html += response.data[i].link;
+                            html += "' alt='Decoupage transfer "+(i+1)+"'/></a>";
+                    html += "</div></div>";
+                }
+                gallery.append(html);
+                $(".col").fadeIn();
+                $("main").append("<button id='showmore'>Pokaż więcej</button>");
+            });
+        });
+
+    </script>
+    <script type="text/javascript">
+    $(window).on('load', function() {
+        $("#preloader #image").fadeOut(); // Usuwamy grafikę ładowania
+        $("#preloader").delay(350).fadeOut("slow"); // Usuwamy diva przysłaniającego stronę
+    });
+    </script>   
+</body>
+
+</html>
