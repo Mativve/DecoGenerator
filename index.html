@@ -7,10 +7,11 @@
     <title>Decogenerator - v0.1</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/fonts.css">
+    <link href="https://fonts.googleapis.com/css?family=Baloo|Baloo+Paaji|Coiny|Courgette|Gloria+Hallelujah|Luckiest+Guy|Pacifico|Poiret+One|Righteous|Shrikhand" rel="stylesheet">
+    <link rel="icon" href="img/favicon.png">
+    
     <script src="js/jquery-3.2.1.js"></script>
-    <link rel="icon" href="http://placehold.it/30x30">
     <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
-
     <script type="text/javascript">
         $(window).on('load', function() {
             $("#preloader #image").fadeOut(); // Usuwamy grafikę ładowania
@@ -31,7 +32,7 @@
         </div>
     </div>
     <div class="container">
-        <header class="tohide">
+        <header>
             <div class="logo">
                 <h1>DecoGenerator</h1>
                 <p>Twórz własne wzory decoupage za darmo!</p>
@@ -60,32 +61,41 @@
                 <div class="row">
                     <button id="add" class="big"><i class="fas fa-plus-square"></i> Dodaj warstwę</button>
                 </div>
-               
+
                 <div class="font">
-                    <label for="yt">Twój tekst lub link do zdjęcia</label>
+                    <label for="yt">Twój tekst</label>
                     <textarea type="text" id="yt" value="Twój tekst"></textarea>
+
+                    <p>Wyrównanie tekstu</p>
+                    <div id="aligns" class="row">
+                        <button class="align" data-align="left" data-tooltip="Wyrównanie tekstu do lewej"><i class="fas fa-align-left"></i></button>
+                        <button class="align" data-align="center" data-tooltip="Wyrównanie tekstu do środka"><i class="fas fa-align-center"></i></button>
+                        <button class="align" data-align="right" data-tooltip="Wyrównanie tekstu do prawej"><i class="fas fa-align-right"></i></button>
+                    </div>
 
                     <p>Wybierz czionkę:</p>
                     <select class="fonty" id="font">
                         <option selected class="Arimo">Arimo</option>
-                        <option class="Bellico">Bellico</option>
-                        <option class="GrandHotel">GrandHotel</option>
-                        <option class="GreatVibes">GreatVibes</option>
-                        <option class="Havana">Havana</option>
-                        <option class="Heneczek">Heneczek</option>
-                        <option class="Jaapokki">Jaapokki</option>
                         <option class="Pacifico">Pacifico</option>
-                        <option class="ScriptinaPro">Scriptina Pro</option>
-                        <option class="Selima">Selima</option>
-                        <option class="SweetSorrow">Sweet Sorrow</option>
-                        <option class="Szwederowo">Szwederowo</option>
-                        <option class="UniSansHeavy">Uni Sans Heavy</option>
+                        <option class="GloriaHallelujah">Gloria Hallelujah</option>
+                        <option class="Courgette">Courgette</option>
+                        <option class="Coiny">Coiny</option>
+                        <option class="Shrikhand">Shrikhand</option>
+                        <option class="Righteous">Righteous</option>
+                        <option class="PoiretOne">Poiret One</option>
+                        <option class="LuckiestGuy">Luckiest Guy</option>
+                        <option class="Baloo">Baloo</option>
+                        <option class="BalooPaaji">Baloo Paaji</option>
+                        <option class="GreatVibes">GreatVibes</option>
+                        <option class="Bellico">Bellico</option>
+                        <option class="Havana">Havana</option>
+                        <option class="Jaapokki">Jaapokki</option>
                     </select>
 
                     <p>Wybierz kolor</p>
                     <input type="color" id="color">
                 </div>
-                <p>Ustal pozycję aktywnego elementu</p>
+                <p>Ustal pozycję tekstu</p>
                 <div class="position">
                     <div class="row">
                         <button id="rotl" data-tooltip="15&deg; w lewo" disabled><i class="fas fa-undo-alt"></i></button>
@@ -115,15 +125,25 @@
             </div>
 
             <div class="todo">
-                <button id="wygeneruj" class="btndark">Podgląd</button>
                 <ul>
-                    <li><a id="download" class="btn btndark">Zapisz na swoim komputerze</a></li>
-                    <!--                    <li><a id="share" class="btn btndark">Udostepnij i pochwal się swoją pracą</a></li>-->
-                    <li id="shared"></li>
+                    <li><button id="wygeneruj" class="btndark">Podgląd</button></li>
+                    <li><button id="wygenerujmirr" class="btndark">Podgląd w lustrzanym odbiciu</button></li>
+                    <li><a id="download" href="#" class="btn btndark">Zapisz na swoim komputerze</a></li>
                 </ul>
             </div>
 
         </div>
+        
+        <footer>
+            <div class="row">
+                <div class="col">
+                    <p>Decogenerator © 2018</p>
+                </div>
+                <div class="col">
+                    <p>Kontakt przez <a href="https://www.facebook.com/DecoGenerator/" target="_blank">Facebook</a></p>
+                </div>
+            </div>
+        </footer>        
 
     </div>
 
@@ -134,9 +154,7 @@
 
     <script type="text/javascript">
         function startIntro() {
-            $("#add").click(function() {
-                intro.goToStepNumber(5);
-            });
+
             var intro = introJs();
             intro.setOption('showBullets', false);
             intro.setOption('nextLabel', "Dalej");
@@ -144,10 +162,11 @@
             intro.setOption('skipLabel', "Pomiń");
             intro.setOption('doneLabel', "Zakończ");
             intro.setOption('tooltipPosition', "left");
-            intro.setOption('scrollToElement', false);
+            intro.setOption('scrollToElement', true);
+            intro.setOption('exitOnOverlayClick', false);
             intro.setOptions({
                 steps: [{
-                        intro: "Witaj w krótkim oprowadzeniu po stronie! Klikij Następny aby przejść do kolejnej podpowiedzi."
+                        intro: "Witaj w krótkim oprowadzeniu po stronie!<br><br>Klikij Następny aby przejść do kolejnej podpowiedzi."
                     },
                     {
                         element: document.querySelector('main'),
@@ -155,21 +174,61 @@
                     },
                     {
                         element: document.querySelectorAll('.controls')[0],
-                        intro: "To jest panel, w którym znajdują się elementy do edycji warstw.",
+                        intro: "To jest panel edycyjny",
                         position: 'left'
                     },
                     {
                         element: document.querySelector('#add'),
-                        intro: 'Dzięki temu przyciskowi możesz dodać nową warstwę. Kliknij go teraz!',
+                        intro: 'Dzięki temu przyciskowi możesz dodać nową warstwę z tekstem.<br><br>Kliknij go <b>dwa</b> razy aby dodać <b>dwie</b> warstwy.',
                         position: 'left'
                     },
                     {
-                        element: document.querySelector('.elements')[0],
-                        intro: "Twoja warstwa została dodana do listy. W niej znajdują się dwa przyciski.</br>-Przycisk z cyfrą uaktywnia warstwę, którą chcesz edytować.</br>-Ikona kosza usuwa tą warstwę.",
+                        element: document.querySelectorAll('.elements')[0],
+                        intro: "Twoje warstwy zostały dodane do listy.<br><br>Aby wybrać warstwę do edycji kliknij na jej nazwę.<br><br>Kliknij Warstwa1. Gdy to zrobisz kliknij Dalej.",
                         position: 'left'
                     },
                     {
-                        intro: "Teraz dodamy tekst do naszej warstwy"
+                        element: document.querySelectorAll('#yt')[0],
+                        intro: "Po wybraniu warstwy pojawi się tekst, który aktualnie jest do niej przypisany.<br><br>Aby dodać swój tekst usuń obecny a następnie wpisz własny np: Dom.",
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelectorAll('#aligns')[0],
+                        intro: "W tym miejscu możesz wybrać wyrównanie tekstu do lewej, centralnej lub prawej strony w obrębie tekstu, nie całej strony!",
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelectorAll('#font')[0],
+                        intro: "Tutaj możesz zmienić czciokę tekstu. Kliknij na pole i wybierz z listy.",
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelectorAll('#color')[0],
+                        intro: "Jeśli chcesz możesz zmienić kolor. Aby to zrobić kliknij na czarne pole a następnie z okna wybierz interesujący Cię kolor.",
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelectorAll('.position')[0],
+                        intro: "Gdy już wszystko jest gotowe możesz przemieścić swój tekst lub go powiększyć za pomocą przycisków.<br><br>Jeśli nie wiesz do czego służy przycisk najedź na niego a pojawi się podpowiedź.",
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelectorAll('.elements')[0],
+                        intro: "Świetnie! Nasz pierwszy tekst jest już gotowy.<br><br>Wybierz Warstwa2. Przypuśćmy, że ta warstwa nam się nie podoba więc pasuje ją usunąć.<br><br>Aby to zrobić kliknij w ikonę kosza obok nazwy warstwy. Pojawi się komunikat. Aby usunąć kliknij OK, aby anulować kliknij Anuluj.<br><br>Kliknij dalej",
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelectorAll('.elements')[0],
+                        intro: "Jeśli wszystko jest już w pełni gotowe przejdziemy do zapisu. Kliknij dalej",
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelectorAll('#generated')[0],
+                        intro: "Po kliknięciu Podgląd pojawi się obraz, który został obrócony. Kliknij go aby zobaczyć rezultat. Gdy nasz transfer jest już gotowy kliknij Zapisz aby zapisać go na swoim komputerze.",
+                    },
+                    {
+                        element: document.querySelectorAll('#generated')[0],
+                        intro: "Myślę, że w jakiś sposób pomogłem Ci zapoznać się z obsługą strony. Jeśli masz jakieś pytania lub zauważysz błąd zgłoś to w wiadomości na <a href='http://localhost/decogenerator/ideas.html'>Facebooku</a>",
                     }
                 ]
             });

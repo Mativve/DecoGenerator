@@ -17,15 +17,6 @@
 }
 
 @font-face {
-    font-family:"GrandHotel";
-    src:url("fonts/GrandHotel-Regular.otf");
-}
-
-.GrandHotel{
-    font-family: "GrandHotel", Arial, sans-serif;
-}
-
-@font-face {
     font-family:"GreatVibes";
     src:url("fonts/GreatVibes-Regular.otf");
 }
@@ -42,14 +33,6 @@
 .Havana{
     font-family: "Havana", Arial, sans-serif;
 }
-@font-face {
-    font-family:"Heneczek";
-    src:url("fonts/heneczek.otf");
-}
-
-.Heneczek{
-    font-family: "Heneczek", Arial, sans-serif;
-}
 
 
 @font-face {
@@ -63,62 +46,4 @@
 @font-face {
     font-family:"Pacha";
     src:url("fonts/Pacha.otf");
-}
-
-.Pacha{
-    font-family: "Pacha", Arial, sans-serif;
-}
-
-@font-face {
-    font-family:"Pacifico";
-    src:url("fonts/Pacifico.ttf");
-}
-
-.Pacifico{
-    font-family: "Pacifico", Arial, sans-serif;
-}
-
-@font-face {
-    font-family:"Scriptina Pro";
-    src:url("fonts/Scriptina Pro.otf");
-}
-
-.ScriptinaPro{
-    font-family: "Scriptina Pro", Arial, sans-serif;
-}
-
-@font-face {
-    font-family:"Selima";
-    src:url("fonts/Selima.ttf");
-}
-
-.Selima{
-    font-family: "Selima", Arial, sans-serif;
-}
-
-@font-face {
-    font-family:"Sweet Sorrow";
-    src:url("fonts/Bellico.ttf");
-}
-
-.SweetSorrow{
-    font-family: "Sweet Sorrow", Arial, sans-serif;
-}
-
-@font-face {
-    font-family:"Szwederowo";
-    src:url("fonts/Szwederowo.otf");
-}
-
-.Szwederowo{
-    font-family: "Szwederowo", Arial, sans-serif;
-}
-
-@font-face {
-    font-family:"Uni Sans Heavy";
-    src:url("fonts/Uni Sans Heavy.otf");
-}
-
-.UniSansHeavy{
-    font-family: "Uni Sans Heavy", Arial, sans-serif;
 }

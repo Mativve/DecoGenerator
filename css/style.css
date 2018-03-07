@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -24,6 +25,7 @@ Preloader
 	position: absolute;
 	left: 50%;
 	top: 50%;
+    -webkit-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);   
 }
 
@@ -35,6 +37,7 @@ Preloader
 
 #preloader #image:before {
   content: '';
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   position: absolute;
   top: 50%;
@@ -46,6 +49,7 @@ Preloader
   border-radius: 50%;
   border: 5px solid transparent;
   border-top-color: #9b59b6;
+  -webkit-animation: spinner .9s linear infinite;
   animation: spinner .9s linear infinite;
 }
 #cent p{width: 100%;}
@@ -59,8 +63,12 @@ Preloader
     top:100%;
 }
 
+@-webkit-keyframes spinner {
+  to {-webkit-transform: rotate(360deg);transform: rotate(360deg);}
+}
+
 @keyframes spinner {
-  to {transform: rotate(360deg);}
+  to {-webkit-transform: rotate(360deg);transform: rotate(360deg);}
 }
 
 
@@ -123,6 +131,7 @@ header .main-menu {
 
 .main-menu ul li a {
     text-decoration: none;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(35%, #9b59b6), color-stop(60%, #74398d));
     background-image: linear-gradient(to right, #9b59b6 35%, #74398d 60%);
     -webkit-background-clip: text;
     background-repeat: no-repeat;
@@ -134,6 +143,7 @@ header .main-menu {
     padding: 0.5em 1em;
     position: relative;
     display: block;
+    -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
     overflow: hidden;
 }
@@ -155,12 +165,14 @@ header .main-menu {
     position: absolute;
     bottom: 0;
     left:50%;
+    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     background-color: #9b59b6;
     height: 2px;
     width: 0;
     opacity: 0;
     visibility: hidden;
+    -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
 
@@ -181,20 +193,22 @@ main {
     margin: 0 1em;
 }
 
-main.gall{
-    flex-direction: column;
-}
 
 .content {
     width: 70%;
+
     flex-grow: 0;
+
     flex-shrink: 0;
     overflow: hidden;
 }
 
 .controls {
     width: 20%;
+
+
     flex-grow: 0;
+
     flex-shrink: 0;
     padding: 1em;
     border-left: 1px solid #d3d3d3;
@@ -204,6 +218,14 @@ main.gall{
 .controls p {
     text-align: center;
     padding: 1em 0 0.5em 0;
+}
+
+.controls .row{
+    display: flex;
+}
+
+.controls button.align{
+    flex: 1 1 auto;
 }
 
 .canvasy {
@@ -271,6 +293,7 @@ select option {
     font-size: 1.5rem;
     padding: 5px;
     color: #000;
+    -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
 }
@@ -279,8 +302,10 @@ select option:checked,
 select option:active,
 select option:focus {
     color: #fff;
+    -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
     background-color: #111;
+    -webkit-box-shadow: 0 0 10px 100px #9b59b6 inset;
     box-shadow: 0 0 10px 100px #9b59b6 inset;
 }
 
@@ -295,6 +320,7 @@ select option:focus {
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
+    -webkit-transition: opacity .2s;
     transition: opacity .2s;
     padding: 0;
 }
@@ -339,7 +365,11 @@ Panel sterowania
 }
 
 .elements .row.active{
-    background-color: #ca98de;
+    background-color: #9b58b7;
+}
+
+.elements .row.active button:first-child{
+    color:#FFF;    
 }
 
 .elements button{
@@ -387,12 +417,8 @@ Panel sterowania
 */
 
 .position {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
     display: flex;
-    -webkit-flex-flow: column;
+    flex-direction: column;
     justify-content: space-around;
     min-height: 200px;
     background-color: #ddd;
@@ -401,14 +427,8 @@ Panel sterowania
 }
 
 .position .row {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
     display: flex;
-    -webkit-flex-flow: row;
     justify-content: space-around;
-    -ms-align-items: stretch;
     align-items: stretch;
     width: 200px;
     margin: 0 auto;
@@ -423,6 +443,7 @@ button, .btn{
     font-weight: bold;
     text-align: center;
     cursor: pointer;
+    -webkit-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
     position: relative;
     padding: 0.5em;
@@ -494,6 +515,7 @@ button:hover, .btn:hover,
     filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
     opacity: 0;
     pointer-events: none;
+    -webkit-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
 }
 
@@ -507,8 +529,6 @@ button:hover, .btn:hover,
     margin-left: -80px;
     padding: 7px;
     width: 160px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
     background-color: #000;
     background-color: rgba(0, 0, 0, 0.9);
@@ -550,14 +570,33 @@ button:hover, .btn:hover,
 Galeria
 */
 
+#sidebar{
+    width: 15%;
+    background-color: #eee;
+}
+
+#sidebar p{
+    text-align: center;
+    margin: 1em 0;
+}
+
+#sidebar ul{
+    list-style: none;
+}
+
+#sidebar ul li button{
+    width: 100%;
+}
+
 #gallery {
     padding: 1em;
-    width: 100%;
+    width: 85%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     flex-wrap: wrap;
 }
+
 
 #gallery .col {
     flex-grow: 1;
@@ -565,21 +604,69 @@ Galeria
     overflow: hidden;
     border-radius: 5px;
     border: 2px solid #5B4296;    
-    margin: 1em;
+    margin: 0.5em;
     background-color: #eee;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;    
 }
 
-#gallery .col .image {
+#gallery .col .img {
     overflow: hidden;
     position: relative;
-    border-radius: 5px; 
+    border-radius: 5px 5px 15px 15px; 
 }
 
-#gallery .col .image img {
+#gallery .col .img img {
     display: block;
     width: 100%;
+    -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
+
+#gallery .col .desc{
+    padding: 0.5em;
+    font-size: 1rem;
+}
+
+#gallery .col .desc p{
+    display: block;
+}
+
+#gallery .col .desc a{
+    text-decoration: none;
+    color:#5B4296;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;    
+    font-weight: bold;
+}
+
+#gallery .col .desc a:hover,
+#gallery .col .desc a:focus{
+    color:#000;
+}
+
+#gallery .col:hover .img img{
+    -webkit-transform: scaleX(-1.2) scaleY(1.2);
+    transform: scaleX(-1.2) scaleY(1.2);
+}
+
+#gallery .col:hover{
+    background-color:#bbb;
+}
+
+#gallery .col .desc .date{
+    font-size: 0.8rem;
+    margin-bottom: 0.5em;
+}
+
+/*
+Podgląd
+*/
 
 
 #generated{
@@ -605,7 +692,9 @@ Galeria
 }
 
 #generated .image img{
-    background-color:#FFF; 
+    background-color:#FFF;
+    display: block;
+    width:100%;
 }
 
 #generated .todo{
@@ -629,8 +718,43 @@ Galeria
     display: block;
 }
 
-#generated #wygeneruj{
+#generated button{
     font-size: 2rem;
     display: block;
     width: 100%;
+}
+
+
+footer .row{
+    display: flex;
+    flex-direction: row;
+    margin: 2em 1em;    
+}
+
+footer .row .col{
+    width:50%;
+}
+
+footer .row .col:last-child{
+    text-align: right;
+}
+
+/*
+Fonts
+*/
+
+.Pacifico{font-family: 'Pacifico', cursive;}
+.GloriaHallelujah{font-family: 'Gloria Hallelujah', cursive;}
+.Courgette{font-family: 'Courgette', cursive;}
+.Coiny{font-family: 'Coiny', cursive;}
+.Shrikhand{font-family: 'Shrikhand', cursive;}
+.Righteous{font-family: 'Righteous', cursive;}
+.PoiretOne{font-family: 'Poiret One', cursive;}
+.LuckiestGuy{font-family: 'Luckiest Guy', cursive;}
+.Baloo{font-family: 'Baloo', cursive;}
+.BalooPaaji{font-family: 'Baloo Paaji', cursive;}
+
+@font-face {
+    font-family:"Arimo";
+    src:url("fonts/Arimo-Regular.ttf");
 }

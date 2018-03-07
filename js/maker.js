@@ -12,52 +12,53 @@ $(document).ready(function () {
     ycenter = Math.floor(ycenter);
 
     //Nowa warstwa
-    $("#add").on('click' , function() {
+    $("#add").on('click', function () {
         if ($elements.find(".row").length == 15) {
             alert("Nie możesz dodać więcej warstw!");
         } else {
 
             ids++;
 
-            if (ids == 1) {
-//                $canvasy.append("<canvas id='c" + ids + "' data-x='" + xcenter + "' data-y='" + ycenter + "' data-r='0' data-size='52' data-font='Arimo' data-text='Twój tekst' data-color='#000'></canvas>");
-                document.getElementsByClassName("canvasy")[0].innerHTML += "<canvas id='c" + ids + "' data-x='" + xcenter + "' data-y='" + ycenter + "' data-r='0' data-size='52' data-font='Arimo' data-text='Twój tekst' data-color='#000'></canvas>";
-                currentId = "c1";
-            } else {
-//                $canvasy.append("<canvas id='c" + ids + "' data-x='" + xcenter + "' data-y='" + ycenter + "' data-r='0' data-size='52' data-font='Arimo' data-text='Twój tekst' data-color='#000'></canvas>");
-                document.getElementsByClassName("canvasy")[0].innerHTML += "<canvas id='c" + ids + "' data-x='" + xcenter + "' data-y='" + ycenter + "' data-r='0' data-size='52' data-font='Arimo' data-text='Twój tekst' data-color='#000'></canvas>";
-            }
+            if (ids == 1) currentId = "c1";
+
+            $canvasy.append("<canvas id='c" + ids + "' data-x='" + xcenter + "' data-y='" + ycenter + "' data-r='0' data-size='52' data-font='Arimo' data-text='Twój tekst' data-color='#000' data-align='center'></canvas>");
 
 
-//            $elements.append("<div class='row'><button data-id='c" + ids + "' class='select' onclick='changeId(this)' >Warstwa" + ids + "</button><button data-id='c" + ids + "' class='remove' onclick='removeLayer(this)'><span><i class='fas fa-trash-alt'></i></span></button></div>");
-            document.getElementsByClassName("elements")[0].innerHTML += "<div class='row'><button data-id='c" + ids + "' class='select' onclick='changeId(this);' >Warstwa" + ids + "</button><button data-id='c" + ids + "' class='remove' onclick='removeLayer(this);'><span><i class='fas fa-trash-alt'></i></span></button></div>";
+
+            $elements.append("<div class='row'><button data-id='c" + ids + "' class='select'>Warstwa" + ids + "</button><button data-id='c" + ids + "' class='remove'><span><i class='fas fa-trash-alt'></i></span></button></div>");
 
             resizeCanvas("c" + ids);
-            editCanvas();
         }
     });
 
-    //Pobieranie id
-    function changeId(obj) {
-        $(".elements .row").removeClass("active");
-        $(obj).parent().addClass("active");
-        currentId = $(obj).data("id");
-        //            console.log("Pobrano id: " + currentId);
-        ccanv = $("#" + currentId);
-        //Pobranie wartości
-        $("#yt").val($("#" + currentId).data("text"));
-        $("#font").val($("#" + currentId).data("font"));
-        editCanvas();
-        console.log("current id" + currentId);
-    }
+    $(".elements").on("click", "button", function () {
 
-    //usuwanie elementu
-    function removeLayer(obj) {
-        var i = $(obj).data("id");
-        console.log("Usuwam:" + i);
-        $("#" + i).remove();
-        $(obj).parent().remove();
-    }
+        if ($(this).hasClass("select")) {
+            //zmien id
+            console.log("Tryb pobierania warstwy");
+            $(".elements .row").removeClass("active");
+            $(this).parent().addClass("active");
+
+            currentId = $(this).data("id");
+            ccanv = $("#" + currentId);
+
+            //Pobranie wartości
+            $("#yt").val($("#" + currentId).data("text"));
+            $("#font").val($("#" + currentId).data("font"));
+            editCanvas();
+        } else if ($(this).hasClass("remove")) {
+            //usun layer
+            console.log("Tryb usuwania warstwy");
+            var id = $(this).data("id");
+
+            if (confirm("Czy chcesz usunąć warstwę " + id)) {
+                $("#" + id).remove();
+                $(this).parent().remove();
+                console.log("Usunięto warstwę:" + id);
+            }
+        }
+
+    });
 
     //Stylowanie
     var xystep = 20;
@@ -107,9 +108,13 @@ $(document).ready(function () {
     $("#yt").on("change paste keyup", function () {
         changeText($(this).val());
     });
-    
+
     $("#color").on("change", function () {
         colorChange($(this).val());
+    });
+    
+    $(".align").on("click", function () {
+        changeAlign($(this).data("align"));
     });    
 
     //Funkcje styli
@@ -184,8 +189,8 @@ $(document).ready(function () {
         ccanv.data("y", cy);
         editCanvas();
     }
-    
-    function colorChange(col){
+
+    function colorChange(col) {
         var color = ccanv.data("color");
         color = col;
         ccanv.attr("data-color", color);
@@ -193,7 +198,15 @@ $(document).ready(function () {
         editCanvas();
     }
     
-    
+    function changeAlign(a){
+        var ca = ccanv.data("align");
+        ca = a;
+        ccanv.attr("data-align", ca);
+        ccanv.data("align", ca);
+        editCanvas();
+    }
+
+
     //Edit canvas
     function editCanvas() {
         var canvas = document.getElementById(currentId);
@@ -204,37 +217,28 @@ $(document).ready(function () {
         var x = ccanv.data("x");
         var y = ccanv.data("y");
         var r = ccanv.data("r");
-        
+        var align = ccanv.data("align");
+
         var fontColor = ccanv.data("color");
 
-        var reg = new RegExp("(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)");
+        var fsize = ccanv.data("size");
+        var font = ccanv.data("font");
 
-        if (reg.test(text)) {
+        ctx.font = fsize + "px " + font;
+        ctx.textAlign = align;
+        ctx.textBaseline = "middle";
 
-            var img = new Image(); // Create new img element
-            img.width = xcenter*2;
-            img.height = ycenter*2;
-            img.addEventListener('load', function () {}, false);
-            img.src = text; // Set source path
+        ctx.rotate(r * Math.PI / 180);
 
-            ctx.rotate(r * Math.PI / 180);
+        ctx.fillStyle = fontColor;
 
-            ctx.drawImage(img, 0, 0, img.width,img.height);
+        
+        var lineheight = fsize;
+        var lines = text.split('\n');
 
-        } else {
-            var fsize = ccanv.data("size");
-            var font = ccanv.data("font");
+        for (var i = 0; i<lines.length; i++)
+            ctx.fillText(lines[i], x, y + (i*lineheight) );        
 
-            ctx.font = fsize + "px " + font;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-
-            ctx.rotate(r * Math.PI / 180);
-            
-            ctx.fillStyle=fontColor;
-
-            ctx.fillText(text, x, y);
-        }
     }
 
     function resizeCanvas(id) {
@@ -246,45 +250,59 @@ $(document).ready(function () {
     }
 
     //Wygenerowanie obrazka
-    $("#wygeneruj").click(function () {
-
+    var mirror = false;
+    function generated(){
+        if ($(".elements .row").length == 0) {
+            alert("Przez sprawdzeniem podglądu musisz utworzyć transfer!");
+            return;
+        }        
+        console.log("Generowanie transferu...");
+        
         $(".image").html("");
-
-        $(".canvasy").css({
-            "transform": "scaleX(-1)"
-        });
-
-        var cns = document.getElementsByClassName("canvasy")[0];
-        html2canvas(cns).then(canvas => {
-            document.querySelector(".image").appendChild(canvas)
-        });
-
-        setTimeout(function () {
-            $(".image canvas").attr("id", "rendered");
-            var c = document.getElementById("rendered");
-            var d = c.toDataURL("image/png");
-            $(".image").append("<img src='" + d + "' alt='from canvas' id='imageready'/>");
+        
+        if(mirror){
             $(".canvasy").css({
-                "transform": "scaleX(1)"
-            });
-        }, 100);
-    });
+                "transform": "scale(-1, 1)"
+            });              
+        }
+        
+        
+        html2canvas(document.querySelector(".canvasy")).then(canvas => {
+            document.querySelector(".image").append(canvas);
+            other();
+        });
+        
+        function other(){
+        if(mirror){
+            $(".canvasy").css({
+                "transform": "scale(1, 1)"
+            });              
+        }
+            
+            $(".image canvas").attr("id","downloadcanvas");
+            
+            var link = document.getElementById("downloadcanvas").toDataURL();
+            $(".image").append("<img src='"+link+"' alt='Transfer'/>");
+        }
+    }
+                              
 
-
-
-    //Udostępnianie
-    $("#download").click(function (e) {
-        var d = new Date();
-        var txt = d.getDate() + "_" + (parseInt(d.getMonth()) + 1) + "_" + d.getFullYear();
-        downloadCanvas(this, "rendered", "decoupage_" + txt + ".png");
-    });
-    $("#share").click(function (e) {
-        upload();
-        e.preventDefault();
+    $("#download").click(function(){
+        var anchor = document.getElementById("download");
+        var today = new Date();
+        var sec = today.getSeconds();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        today = "Transfer"+sec+''+mm + '' + dd + '' + yyyy;        
+        downloadCanvas(anchor, "downloadcanvas", today);
     });
 
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();
-        link.download = filename;
-    }
+        link.download = filename + ".png";
+    } 
+    
+    $("#wygeneruj").click(function(){mirror=false;generated();});
+    $("#wygenerujmirr").click(function(){mirror=true;generated();});
 });
