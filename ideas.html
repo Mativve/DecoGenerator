@@ -11,6 +11,11 @@
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link rel="icon" href="img/favicon.png">
     <script type="text/javascript">
+        
+        if(window.outerWidth < 900){
+            window.location.href = "sorry.html";
+        }
+        
         $(window).on('load', function() {
             $("#preloader #image").fadeOut(); // Usuwamy grafikę ładowania
             $("#preloader").delay(350).fadeOut("slow"); // Usuwamy diva przysłaniającego stronę
@@ -40,9 +45,9 @@
         <main class="gall">
 
             <div id="sidebar">
-                <p>Tagi:</p>
+               <a href="https://goo.gl/forms/ka1RJRqEVCO72GTi2" target="_blank"><i class="fab fa-telegram-plane"></i> Wyślij nam swój transfer</a>
+                <p>Kategorie:</p>
                 <ul>
-                    <li><button>Dom</button></li>
                 </ul>
             </div>
 
@@ -52,10 +57,10 @@
 
         <footer>
             <div class="row">
-                <div class="col">
+                <div class="fl">
                     <p>Decogenerator © 2018</p>
                 </div>
-                <div class="col">
+                <div class="fr">
                     <p>Kontakt przez <a href="https://www.facebook.com/DecoGenerator/" target="_blank">Facebook</a></p>
                 </div>
             </div>

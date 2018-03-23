@@ -247,6 +247,14 @@ main {
     border:2px solid #aaa;
 }
 
+.canvasy #grid{
+    display: none;
+}
+
+.canvasy:hover #grid, .position:hover ~ #grid{
+    display: block;
+}
+
 /*
 Inputy
 */
@@ -290,12 +298,14 @@ select {
 }
 
 select option {
-    font-size: 1.5rem;
-    padding: 5px;
+    font-size: 1.25rem;
+    margin: 10px 5px;
     color: #000;
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+    background-color: #fff;
     cursor: pointer;
+    height: 30px;
 }
 
 select option:checked,
@@ -375,6 +385,9 @@ Panel sterowania
 .elements button{
     width: 100%;
     position: relative;
+    overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow: ellipsis;    
 }
 
 .elements button:last-child{
@@ -430,7 +443,7 @@ Panel sterowania
     display: flex;
     justify-content: space-around;
     align-items: stretch;
-    width: 200px;
+    width: 100%;
     margin: 0 auto;
 }
 
@@ -573,11 +586,42 @@ Galeria
 #sidebar{
     width: 15%;
     background-color: #eee;
+    overflow: hidden;
 }
 
 #sidebar p{
     text-align: center;
     margin: 1em 0;
+}
+
+#sidebar a{
+    text-align: right;
+    padding: 1em;
+    display: block;
+    color:#9b59b6;
+    text-decoration: none;
+    position: relative;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+#sidebar a svg{
+    position: absolute;
+    top: 50%;left: 10px;
+    transform: translateY(-50%);
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+#sidebar a:hover{
+    color:#FFF;
+    background-color: #5B4296;
+}
+
+#sidebar a:hover svg{
+    font-size: 1.8rem;
 }
 
 #sidebar ul{
@@ -731,11 +775,11 @@ footer .row{
     margin: 2em 1em;    
 }
 
-footer .row .col{
+footer .row div {
     width:50%;
 }
 
-footer .row .col:last-child{
+footer .fr{
     text-align: right;
 }
 
@@ -751,7 +795,6 @@ Fonts
 .Righteous{font-family: 'Righteous', cursive;}
 .PoiretOne{font-family: 'Poiret One', cursive;}
 .LuckiestGuy{font-family: 'Luckiest Guy', cursive;}
-.Baloo{font-family: 'Baloo', cursive;}
 .BalooPaaji{font-family: 'Baloo Paaji', cursive;}
 
 @font-face {

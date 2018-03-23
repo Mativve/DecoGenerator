@@ -7,12 +7,17 @@
     <title>Decogenerator - v0.1</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/fonts.css">
-    <link href="https://fonts.googleapis.com/css?family=Baloo|Baloo+Paaji|Coiny|Courgette|Gloria+Hallelujah|Luckiest+Guy|Pacifico|Poiret+One|Righteous|Shrikhand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Paaji|Coiny|Courgette|Gloria+Hallelujah|Luckiest+Guy|Pacifico|Poiret+One|Righteous|Shrikhand&subset=latin-ext" rel="stylesheet">
     <link rel="icon" href="img/favicon.png">
     
     <script src="js/jquery-3.2.1.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
     <script type="text/javascript">
+        
+        if(window.outerWidth < 900){
+            window.location.href = "sorry.html";
+        }
+        
         $(window).on('load', function() {
             $("#preloader #image").fadeOut(); // Usuwamy grafikę ładowania
             $("#preloader").delay(350).fadeOut("slow"); // Usuwamy diva przysłaniającego stronę
@@ -53,6 +58,7 @@
 
             <div class="content">
                 <div class="canvasy">
+                    <canvas id="grid" class="hidden"></canvas>
                 </div>
             </div>
 
@@ -75,21 +81,20 @@
 
                     <p>Wybierz czionkę:</p>
                     <select class="fonty" id="font">
-                        <option selected class="Arimo">Arimo</option>
-                        <option class="Pacifico">Pacifico</option>
-                        <option class="GloriaHallelujah">Gloria Hallelujah</option>
-                        <option class="Courgette">Courgette</option>
-                        <option class="Coiny">Coiny</option>
-                        <option class="Shrikhand">Shrikhand</option>
-                        <option class="Righteous">Righteous</option>
-                        <option class="PoiretOne">Poiret One</option>
-                        <option class="LuckiestGuy">Luckiest Guy</option>
-                        <option class="Baloo">Baloo</option>
-                        <option class="BalooPaaji">Baloo Paaji</option>
-                        <option class="GreatVibes">GreatVibes</option>
-                        <option class="Bellico">Bellico</option>
-                        <option class="Havana">Havana</option>
-                        <option class="Jaapokki">Jaapokki</option>
+                        <option selected class="Arimo" value="Arimo">[PL] Arimo</option>
+                        <option class="Pacifico" value="Pacifico">[PL] Pacifico</option>
+                        <option class="GloriaHallelujah" value="Gloria Hallelujah">Gloria Hallelujah</option>
+                        <option class="Courgette" value="Courgette">[PL] Courgette</option>
+                        <option class="Coiny" value="Coiny">[PL] Coiny</option>
+                        <option class="Shrikhand" value="Shrikhand">[PL] Shrikhand</option>
+                        <option class="Righteous" value="Righteous">[PL] Righteous</option>
+                        <option class="PoiretOne" value="Poiret One">[PL] Poiret One</option>
+                        <option class="LuckiestGuy" value="Luckiest Guy">Luckiest Guy</option>
+                        <option class="BalooPaaji" value="Baloo Paaji">[PL] Baloo Paaji</option>
+                        <option class="GreatVibes" value="GreatVibes">[PL] GreatVibes</option>
+                        <option class="Bellico" value="Bellico">[PL] Bellico</option>
+                        <option class="Havana" value="Havana">[PL] Havana</option>
+                        <option class="Jaapokki" value="Jaapokki">[PL] Jaapokki</option>
                     </select>
 
                     <p>Wybierz kolor</p>
@@ -136,14 +141,14 @@
         
         <footer>
             <div class="row">
-                <div class="col">
+                <div class="fl">
                     <p>Decogenerator © 2018</p>
                 </div>
-                <div class="col">
+                <div class="fr">
                     <p>Kontakt przez <a href="https://www.facebook.com/DecoGenerator/" target="_blank">Facebook</a></p>
                 </div>
             </div>
-        </footer>        
+        </footer>   
 
     </div>
 
@@ -161,8 +166,7 @@
             intro.setOption('prevLabel', "Wróć");
             intro.setOption('skipLabel', "Pomiń");
             intro.setOption('doneLabel', "Zakończ");
-            intro.setOption('tooltipPosition', "left");
-            intro.setOption('scrollToElement', true);
+            intro.setOption('scrollToElement', false);
             intro.setOption('exitOnOverlayClick', false);
             intro.setOptions({
                 steps: [{
@@ -170,11 +174,12 @@
                     },
                     {
                         element: document.querySelector('main'),
-                        intro: "To jest główne okno edytora."
+                        intro: "To jest główne okno edytora.",
+                        position: 'top'
                     },
                     {
                         element: document.querySelectorAll('.controls')[0],
-                        intro: "To jest panel edycyjny",
+                        intro: "To jest panel edycji tekstu",
                         position: 'left'
                     },
                     {
@@ -184,12 +189,12 @@
                     },
                     {
                         element: document.querySelectorAll('.elements')[0],
-                        intro: "Twoje warstwy zostały dodane do listy.<br><br>Aby wybrać warstwę do edycji kliknij na jej nazwę.<br><br>Kliknij Warstwa1. Gdy to zrobisz kliknij Dalej.",
+                        intro: "Twoje warstwy zostały dodane do listy.<br><br>Aby wybrać warstwę do edycji kliknij na jej nazwę.<br><br>Kliknij w <b>pierwszą</b> warstwę z nazwą Twój tekst. Gdy to zrobisz kliknij Dalej.",
                         position: 'left'
                     },
                     {
                         element: document.querySelectorAll('#yt')[0],
-                        intro: "Po wybraniu warstwy pojawi się tekst, który aktualnie jest do niej przypisany.<br><br>Aby dodać swój tekst usuń obecny a następnie wpisz własny np: Dom.",
+                        intro: "Po wybraniu warstwy pojawi się tekst, który aktualnie jest do niej przypisany.<br><br>Aby dodać swój tekst usuń obecny a następnie wpisz własny np: Dom.<br><br>Dodatkowo po zmianie tekstu zmieni się ono także w liście warstw.",
                         position: 'left'
                     },
                     {
@@ -199,7 +204,7 @@
                     },
                     {
                         element: document.querySelectorAll('#font')[0],
-                        intro: "Tutaj możesz zmienić czciokę tekstu. Kliknij na pole i wybierz z listy.",
+                        intro: "Tutaj możesz zmienić czciokę tekstu. Kliknij na pole i wybierz z listy.<br><br>Czcionka mająca [PL] posiada polskie znaki. Jeśli znaki nie są widoczne trzeba przełączyć na inną i powrócić do poprzedniej",
                         position: 'left'
                     },
                     {
@@ -209,7 +214,7 @@
                     },
                     {
                         element: document.querySelectorAll('.position')[0],
-                        intro: "Gdy już wszystko jest gotowe możesz przemieścić swój tekst lub go powiększyć za pomocą przycisków.<br><br>Jeśli nie wiesz do czego służy przycisk najedź na niego a pojawi się podpowiedź.",
+                        intro: "Gdy już wszystko jest gotowe możesz przemieścić swój tekst lub go powiększyć za pomocą przycisków.<br><br>Jeśli nie wiesz do czego służy przycisk najedź na niego a pojawi się podpowiedź.<br><br>Jeśli klikniesz przycisk na dłuższy czas to tekst będzie się sam przesuwał w wybranym kierunku.",
                         position: 'left'
                     },
                     {
@@ -228,7 +233,7 @@
                     },
                     {
                         element: document.querySelectorAll('#generated')[0],
-                        intro: "Myślę, że w jakiś sposób pomogłem Ci zapoznać się z obsługą strony. Jeśli masz jakieś pytania lub zauważysz błąd zgłoś to w wiadomości na <a href='http://localhost/decogenerator/ideas.html'>Facebooku</a>",
+                        intro: "Myślę, że w jakiś sposób pomogłem Ci zapoznać się z obsługą strony. Jeśli masz jakieś pytania lub zauważysz błąd zgłoś to w wiadomości na <a href='https://www.facebook.com/DecoGenerator'>Facebooku</a>",
                     }
                 ]
             });

@@ -1,5 +1,5 @@
-        $(document).ready(function() {
-            var perShow = 20;
+        $(document).ready(function () {
+            var currentTag = "Wszystko";
 
             var settings = {
                 "async": true,
@@ -11,56 +11,92 @@
                 }
             };
 
+            function renderTags() {
+                let html = "";
+                var tags = ["Wszystko"];
 
-            function render(){
-                $.ajax(settings).done(function(response) {
+                $("#sidebar ul").html("");
+                $.ajax(settings).done(function (response) {
 
-                    //Generate gallery
-                    $("main").html("");
-                    
-                    var html = "";
-                    var tags = ["Wszystko"];
-                    
-                    html += "<div id='sidebar'><p>Tagi:</p><ul>";
-                    
-                    for (var i = 0; i <= Object.keys(response.data).length - 1; i++) {
+                    html += "";
+
+                    for (var i = 0; i < Object.keys(response.data).length; i++) {
                         if (i == 0) {
                             tags.push(response.data[i].title);
                         } else {
-                            if (!tags.includes(response.data[i].title)) {                                
+                            if (!tags.includes(response.data[i].title)) {
                                 tags.push(response.data[i].title);
                             }
                         }
                     }
-                    
-                    for(var i=0;i<tags.length;i++){
-                        html += "<li><button data-tag='"+tags[i]+"'>"+tags[i]+"</button></li>";
+
+                    for (var i = 0; i < tags.length; i++) {
+                        html += "<li><button class='tagbuttons' data-tag='" + tags[i] + "'>" + tags[i] + "</button></li>";
                     }
-                    
-                    html += "</ul></div>";
-                    
-                    html += "<div id='gallery'>";
+
+                    $("#sidebar ul").html(html);
+                });
+                
+            }
+            renderTags();
+
+            function render() {
+                $.ajax(settings).done(function (response) {
+                    let html = "";
+                    //Generate gallery
+                    $("#gallery").html("");
 
 
                     if (Object.keys(response.data).length == 0) {
                         gallery.append("<p>Brak zdjęć. Spróbuj odświeżyć stronę. Jeśli problem się powtórzy skontaktuj się z administratorem strony</p>");
                     }
                     $(".col").fadeOut();
-                    for (var i = 0; i <= Object.keys(response.data).length - 1; i++) {
-                        html += "<div class='col' style='display:none'>";
-                        html += "<div class='img'><img src='" + response.data[i].link + "' alt='Transfer decopage'/></div>";
-                        html += "<div class='desc'><p>Tag: " + response.data[i].title + "</p><p class='date'>Dodano:" + timeConverter(response.data[i].datetime) + "</p><p><a href='" + response.data[i].link + "' download><i class='fas fa-save'></i> Pobierz transfer</a></p></div>";
-                        html += "</div>";
+                    
+                    if(currentTag == "Wszystko"){
+                        for (var i = 0; i < Object.keys(response.data).length; i++) {
+                            html += "<div class='col' style='display:none'>";
+                            html += "<div class='img'><img src='" + response.data[i].link + "' alt='Transfer decopage'/></div>";
+                            html += "<div class='desc'><p>Tag: " + response.data[i].title + "</p><p class='date'>Dodano:" + timeConverter(response.data[i].datetime) + "</p><p><a href='" + response.data[i].link + "' download><i class='fas fa-save'></i> Pobierz transfer</a></p></div>";
+                            html += "</div>";
+                        }                        
+                    }
+                    else{
+                        for (var i = 0; i < Object.keys(response.data).length; i++) {
+                            if(currentTag == response.data[i].title){
+                                    html += "<div class='col' style='display:none'>";
+                                    html += "<div class='img'><img src='" + response.data[i].link + "' alt='Transfer decopage'/></div>";
+                                    html += "<div class='desc'><p>Tag: " + response.data[i].title + "</p><p class='date'>Dodano:" + timeConverter(response.data[i].datetime) + "</p><p><a href='" + response.data[i].link + "' download><i class='fas fa-save'></i> Pobierz transfer</a></p></div>";
+                                    html += "</div>";                               
+                               }
+                        } 
                     }
 
-                    html+="<button id='showmore'>Pokaż więcej</button>";
-                    html += "</div>";
-                    
-                    $("main").html(html);
+                    $("#gallery").html(html);
                     $(".col").fadeIn();
-                });                
+                });
             }
             render();
+            
+            
+            //selectTags
+            
+            $("#sidebar").on("click",".tagbuttons",function(){
+                
+                $(".tagbuttons").removeClass("");
+                $(this).addClass("selected");
+               
+                var t = $(this).data("tag");
+                if(t!=currentTag){
+                    currentTag = t;
+                    console.log("Wybrano "+t);
+                    render();
+                }
+                
+                
+                
+            });
+            
+            
 
             function timeConverter(UNIX_timestamp) {
                 var a = new Date(UNIX_timestamp * 1000);
@@ -77,10 +113,4 @@
                 var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min;
                 return time;
             }
-            
-            function showmore(){
-                perShow += 20;
-                render();
-            }
-            $("#showmore").click(showmore());
         });

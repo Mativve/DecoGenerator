@@ -1,4 +1,15 @@
 $(document).ready(function () {
+    
+    //Fontsy
+    WebFontConfig = {
+      google:{ families: ['Baloo Paaji','Coiny','Courgette','Gloria Hallelujah', 'Luckiest Guy', 'Pacifico', 'Poiret One', 'Righteous','Shrikhand'] }
+    };
+    (function(){
+      var wf = document.createElement("script");
+      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js';
+      wf.async = 'true';
+      document.head.appendChild(wf);
+    })();
 
     //Zmienne globalne
     var currentId;
@@ -19,15 +30,14 @@ $(document).ready(function () {
 
             ids++;
 
-            if (ids == 1) currentId = "c1";
-
             $canvasy.append("<canvas id='c" + ids + "' data-x='" + xcenter + "' data-y='" + ycenter + "' data-r='0' data-size='52' data-font='Arimo' data-text='Twój tekst' data-color='#000' data-align='center'></canvas>");
 
 
 
-            $elements.append("<div class='row'><button data-id='c" + ids + "' class='select'>Warstwa" + ids + "</button><button data-id='c" + ids + "' class='remove'><span><i class='fas fa-trash-alt'></i></span></button></div>");
-
+            $elements.append("<div class='row'><button data-id='c" + ids + "' class='select'>" + ids + "</button><button data-id='c" + ids + "' class='remove'><span><i class='fas fa-trash-alt'></i></span></button></div>");
+            
             resizeCanvas("c" + ids);
+            setText();
         }
     });
 
@@ -50,6 +60,10 @@ $(document).ready(function () {
             //usun layer
             console.log("Tryb usuwania warstwy");
             var id = $(this).data("id");
+            
+            if(currentId == id){
+                currentId = null;
+            }
 
             if (confirm("Czy chcesz usunąć warstwę " + id)) {
                 $("#" + id).remove();
@@ -60,24 +74,97 @@ $(document).ready(function () {
 
     });
 
+    
+    function setText(){
+        var can = $(".canvasy canvas:not(#grid)");
+        var btn = $(".elements button.select");
+        
+        for(var i=0;i<can.length;i++){
+            let txt = can.eq(i).data("text");
+            
+            if(txt==""){
+                btn.eq(i).text("-Brak tekstu-");
+            }
+            else{
+                btn.eq(i).text(txt);
+            }
+        }
+    }
+    
+
     //Stylowanie
-    var xystep = 20;
+    var xystep = 5;
     var rotatestep = 15;
     var sizestep = 10
     //Gdy zmiana X
-    $("#left").click(function () {
-        changeX(-xystep);
+    var xSI;
+    $("#left").mousedown(function () {
+        xSI = setInterval(function(){
+            changeX(-xystep);
+        },100);
+        
+        return false;
     });
-    $("#right").click(function () {
-        changeX(+xystep);
+    $("#left").mouseup(function(){
+        clearInterval(xSI);
+        return false;
+    });
+    $("#left").mouseleave(function(){
+        clearInterval(xSI);
+        return false;
+    });
+    
+    
+    $("#right").mousedown(function () {
+        xSI = setInterval(function(){
+            changeX(+xystep);
+        },100);
+        
+        return false;
+    });
+    $("#right").mouseup(function(){
+        clearInterval(xSI);
+        return false;
+    });
+    $("#right").mouseleave(function(){
+        clearInterval(xSI);
+        return false;
     });
 
-    //Gdy zmiana Y
-    $("#up").click(function () {
-        changeY(-xystep);
+    //Gdy zmiana Y    
+    var ySI;
+    $("#up").mousedown(function () {
+        console.log("click");
+        ySI = setInterval(function(){
+            changeY(-xystep);
+        },100);
+        
+        return false;
     });
-    $("#down").click(function () {
-        changeY(+xystep);
+    $("#up").mouseup(function(){
+        clearInterval(ySI);
+        return false;
+    });
+    $("#up").mouseleave(function(){
+        clearInterval(ySI);
+        return false;
+    });
+    
+    $("#down").mousedown(function () {
+        console.log("click");
+        ySI = setInterval(function(){
+            changeY(+xystep)
+        },100);
+        
+        return false;
+    });
+    $("#down").mouseup(function(){
+        clearInterval(ySI);
+        return false;
+    });
+    $("#down").mouseleave(function(){
+        clearInterval(ySI);
+        return false;
     });
 
     //Gdy obracanie
@@ -176,6 +263,7 @@ $(document).ready(function () {
         ccanv.data("text", ct);
         //        console.log("Zmieniono tekst: " + ct);
         editCanvas();
+        setText();
     }
 
     function centered() {
@@ -210,6 +298,10 @@ $(document).ready(function () {
     //Edit canvas
     function editCanvas() {
         var canvas = document.getElementById(currentId);
+        if(canvas==null){
+            alert("Przed edycją wybierz warstwę!");
+            return;
+        }
         var ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -305,4 +397,50 @@ $(document).ready(function () {
     
     $("#wygeneruj").click(function(){mirror=false;generated();});
     $("#wygenerujmirr").click(function(){mirror=true;generated();});
+    
+    
+    
+    
+    
+    
+    
+    
+    function grid(){
+        // Box width
+        var bw = $canvasy.width();
+        // Box height
+        var bh = $canvasy.height();
+        // Padding
+        var p = 0;
+        //space
+        var s = 17;
+
+        var canvas = document.getElementById("grid");
+        var ctx = canvas.getContext("2d");
+        resizeCanvas("grid");
+//        for (var x = 0; x <= bw; x += s) {
+//            ctx.moveTo(0.5 + x + p, p);
+//            ctx.lineTo(0.5 + x + p, bh + p);
+//        }
+//
+//
+//        for (var x = 0; x <= bh; x += s) {
+//            ctx.moveTo(p, 0.5 + x + p);
+//            ctx.lineTo(bw + p, 0.5 + x + p);
+//        }
+//
+//        context.strokeStyle = "#aaa";
+//        context.stroke();  
+        ctx.beginPath();
+        ctx.moveTo(0,(bh/2));
+        ctx.lineTo(bw,(bh/2));
+        ctx.strokeStyle = "#aaa";
+        
+        
+        ctx.moveTo((bw/2),0);
+        ctx.lineTo((bw/2),bh);   
+        ctx.strokeStyle = "#aaa";        
+        ctx.stroke();        
+    }
+    grid();
 });
