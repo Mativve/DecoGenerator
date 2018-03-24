@@ -9,15 +9,14 @@
     <link rel="stylesheet" href="css/fonts.css">
     <link href="https://fonts.googleapis.com/css?family=Baloo+Paaji|Coiny|Courgette|Gloria+Hallelujah|Luckiest+Guy|Pacifico|Poiret+One|Righteous|Shrikhand&subset=latin-ext" rel="stylesheet">
     <link rel="icon" href="img/favicon.png">
-    
+
     <script src="js/jquery-3.2.1.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
     <script type="text/javascript">
-        
-        if(window.outerWidth < 900){
+        if (window.outerWidth < 900) {
             window.location.href = "sorry.html";
         }
-        
+
         $(window).on('load', function() {
             $("#preloader #image").fadeOut(); // Usuwamy grafikę ładowania
             $("#preloader").delay(350).fadeOut("slow"); // Usuwamy diva przysłaniającego stronę
@@ -138,7 +137,7 @@
             </div>
 
         </div>
-        
+
         <footer>
             <div class="row">
                 <div class="fl">
@@ -148,7 +147,7 @@
                     <p>Kontakt przez <a href="https://www.facebook.com/DecoGenerator/" target="_blank">Facebook</a></p>
                 </div>
             </div>
-        </footer>   
+        </footer>
 
     </div>
 
@@ -243,15 +242,37 @@
     </script>
     <!-- Hotjar Tracking Code for https://mativve.github.io/DecoGenerator/ -->
     <script>
-        (function(h,o,t,j,a,r){
-            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-            h._hjSettings={hjid:825776,hjsv:6};
-            a=o.getElementsByTagName('head')[0];
-            r=o.createElement('script');r.async=1;
-            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        (function(h, o, t, j, a, r) {
+            h.hj = h.hj || function() {
+                (h.hj.q = h.hj.q || []).push(arguments)
+            };
+            h._hjSettings = {
+                hjid: 825776,
+                hjsv: 6
+            };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script');
+            r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
             a.appendChild(r);
-        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-    </script>    
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+
+    </script>
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pl',
+                includedLanguages: 'de,en,pl,ru',
+                layout: google.translate.TranslateElement.FloatPosition.TOP_RIGHT
+            }, 'google_translate_element');
+        }
+
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+
 </body>
 
 </html>
