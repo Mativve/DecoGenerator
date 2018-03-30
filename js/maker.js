@@ -21,6 +21,18 @@ $(document).ready(function () {
     var ycenter = $canvasy.height() / 2;
     xcenter = Math.floor(xcenter);
     ycenter = Math.floor(ycenter);
+    
+    
+    
+    function shPanel(){
+        if(currentId==null || $elements.length == 0){
+            $(".tohide").css({"opacity":"0","visibility":"hidden"});
+        }
+        else{
+            $(".tohide").css({"opacity":"1","visibility":"visible"});
+        }
+    }   
+    shPanel();
 
     //Nowa warstwa
     $("#add").on('click', function () {
@@ -38,6 +50,7 @@ $(document).ready(function () {
             
             resizeCanvas("c" + ids);
             setText();
+            shPanel();
         }
     });
 
@@ -56,6 +69,8 @@ $(document).ready(function () {
             $("#yt").val($("#" + currentId).data("text"));
             $("#font").val($("#" + currentId).data("font"));
             editCanvas();
+            shPanel();
+            
         } else if ($(this).hasClass("remove")) {
             //usun layer
             console.log("Tryb usuwania warstwy");
@@ -69,9 +84,10 @@ $(document).ready(function () {
                 $("#" + id).remove();
                 $(this).parent().remove();
                 console.log("Usunięto warstwę:" + id);
+                shPanel();
             }
         }
-
+        
     });
 
     
@@ -90,7 +106,205 @@ $(document).ready(function () {
             }
         }
     }
+            
+
+
+    //Edit canvas
+    function editCanvas() {
+        var canvas = document.getElementById(currentId);
+        if(canvas==null){
+            alert("Przed edycją wybierz warstwę!");
+            return;
+        }
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        var text = ccanv.data("text");
+        var x = ccanv.data("x");
+        var y = ccanv.data("y");
+        var r = ccanv.data("r");
+        var align = ccanv.data("align");
+
+        var fontColor = ccanv.data("color");
+
+        var fsize = ccanv.data("size");
+        var font = ccanv.data("font");
+
+        ctx.font = fsize + "px " + font;
+        ctx.textAlign = align;
+        ctx.textBaseline = "middle";
+
+        ctx.rotate(r * Math.PI / 180);
+
+        ctx.fillStyle = fontColor;
+
+        
+        var lineheight = fsize;
+        var lines = text.split('\n');
+
+        for (var i = 0; i<lines.length; i++)
+            ctx.fillText(lines[i], x, y + (i*lineheight) );        
+
+    }
+
+    function resizeCanvas(id) {
+        var cW = $canvasy.width();
+        var cH = $canvasy.height();
+
+        $(".canvasy #" + id).attr("width", cW);
+        $(".canvasy #" + id).attr("height", cH);
+    }
+
+    //Wygenerowanie obrazka
+    var mirror = false;
+    function generated(){
+        if ($(".elements .row").length == 0) {
+            alert("Przez sprawdzeniem podglądu musisz utworzyć transfer!");
+            return;
+        }        
+        console.log("Generowanie transferu...");
+        
+        $(".image").slideToggle().html("");
+        
+        if(mirror){
+            $(".canvasy").css({
+                "transform": "scale(-1, 1)"
+            });              
+        }
+        
+        
+        html2canvas(document.querySelector(".canvasy")).then(canvas => {
+            document.querySelector(".image").append(canvas);
+            other();
+        });
+        
+        function other(){
+        if(mirror){
+            $(".canvasy").css({
+                "transform": "scale(1, 1)"
+            });              
+        }
+            
+            $(".image canvas").attr("id","downloadcanvas");
+            
+            var link = document.getElementById("downloadcanvas").toDataURL();
+            $(".image").slideToggle().append("<img src='"+link+"' alt='Transfer'/>");
+        }
+    }
     
+    
+    
+    
+    
+//Funkcje styli
+    function changeX(x) {
+        var cx = ccanv.data("x");
+        cx += x;
+        cx = Math.floor(cx);
+        ccanv.attr("data-x", cx);
+        ccanv.data("x", cx);
+        //        console.log("Zmieniono pozycję X o: " + cx);
+        editCanvas();
+    }
+
+    function changeY(y) {
+        var cy = ccanv.data("y");
+        cy += y;
+        cy = Math.floor(cy);
+        ccanv.attr("data-y", cy);
+        ccanv.data("y", cy);
+        //        console.log("Zmieniono pozycję Y o: " + cy);
+        editCanvas();
+    }
+
+    function rotate(r) {
+        console.log(ccanv);
+        var cr = ccanv.data("r");
+        cr += r;
+        ccanv.data("r", cr);
+        ccanv.attr("data-r", cr);
+        editCanvas();
+        //        console.log("Obrócono o: " + cr);
+        //        $("#" + currentId).css({
+        //            "transform": "rotate("+cr+"deg)"
+        //        });
+    }
+
+    function fontSize(s) {
+        var cs = ccanv.data("size");
+        cs += s;
+        ccanv.attr("data-size", cs);
+        ccanv.data("size", cs);
+        //        console.log("Zmieniono rozmiar czcionki: " + cs);
+        editCanvas();
+    }
+
+    function changeFont(f) {
+        var cf = ccanv.data("font");
+        cf = f;
+        ccanv.attr("data-font", cf);
+        ccanv.data("font", cf);
+        //        console.log("Zmieniono czcionkę: " + cf);
+        editCanvas();
+    }
+
+    function changeText(t) {
+        var ct = ccanv.data("text");
+        ct = t;
+        ccanv.attr("data-text", ct);
+        ccanv.data("text", ct);
+        //        console.log("Zmieniono tekst: " + ct);
+        editCanvas();
+        setText();
+    }
+
+    function centered() {
+        var cx = ccanv.data("x");
+        var cy = ccanv.data("y");
+        cx = xcenter;
+        cy = ycenter;
+        ccanv.attr("data-x", cx);
+        ccanv.attr("data-y", cy);
+        ccanv.data("x", cx);
+        ccanv.data("y", cy);
+        editCanvas();
+    }
+
+    function colorChange(col) {
+        var color = ccanv.data("color");
+        color = col;
+        ccanv.attr("data-color", color);
+        ccanv.data("color", color);
+        editCanvas();
+    }
+    
+    function changeAlign(a){
+        var ca = ccanv.data("align");
+        ca = a;
+        ccanv.attr("data-align", ca);
+        ccanv.data("align", ca);
+        editCanvas();
+    }
+    
+    function center(x,y){
+        
+        if(x!=0){
+            //zrob tylko w poziomie
+            ccanv.attr("data-x", x);
+            ccanv.data("x", x);
+            editCanvas();
+        }
+        
+        if(y!=0){
+            //zrob tylko w pionie
+            ccanv.attr("data-y", y);
+            ccanv.data("y", y);
+            editCanvas();
+        }
+        
+    }
+    
+
 
     //Stylowanie
     var xystep = 5;
@@ -202,183 +416,20 @@ $(document).ready(function () {
     
     $(".align").on("click", function () {
         changeAlign($(this).data("align"));
-    });    
-
-    //Funkcje styli
-    function changeX(x) {
-        var cx = ccanv.data("x");
-        cx += x;
-        cx = Math.floor(cx);
-        ccanv.attr("data-x", cx);
-        ccanv.data("x", cx);
-        //        console.log("Zmieniono pozycję X o: " + cx);
-        editCanvas();
-    }
-
-    function changeY(y) {
-        var cy = ccanv.data("y");
-        cy += y;
-        cy = Math.floor(cy);
-        ccanv.attr("data-y", cy);
-        ccanv.data("y", cy);
-        //        console.log("Zmieniono pozycję Y o: " + cy);
-        editCanvas();
-    }
-
-    function rotate(r) {
-        console.log(ccanv);
-        var cr = ccanv.data("r");
-        cr += r;
-        ccanv.data("r", cr);
-        ccanv.attr("data-r", cr);
-        editCanvas();
-        //        console.log("Obrócono o: " + cr);
-        //        $("#" + currentId).css({
-        //            "transform": "rotate("+cr+"deg)"
-        //        });
-    }
-
-    function fontSize(s) {
-        var cs = ccanv.data("size");
-        cs += s;
-        ccanv.attr("data-size", cs);
-        ccanv.data("size", cs);
-        //        console.log("Zmieniono rozmiar czcionki: " + cs);
-        editCanvas();
-    }
-
-    function changeFont(f) {
-        var cf = ccanv.data("font");
-        cf = f;
-        ccanv.attr("data-font", cf);
-        ccanv.data("font", cf);
-        //        console.log("Zmieniono czcionkę: " + cf);
-        editCanvas();
-    }
-
-    function changeText(t) {
-        var ct = ccanv.data("text");
-        ct = t;
-        ccanv.attr("data-text", ct);
-        ccanv.data("text", ct);
-        //        console.log("Zmieniono tekst: " + ct);
-        editCanvas();
-        setText();
-    }
-
-    function centered() {
-        var cx = ccanv.data("x");
-        var cy = ccanv.data("y");
-        cx = xcenter;
-        cy = ycenter;
-        ccanv.attr("data-x", cx);
-        ccanv.attr("data-y", cy);
-        ccanv.data("x", cx);
-        ccanv.data("y", cy);
-        editCanvas();
-    }
-
-    function colorChange(col) {
-        var color = ccanv.data("color");
-        color = col;
-        ccanv.attr("data-color", color);
-        ccanv.data("color", color);
-        editCanvas();
-    }
+    });
     
-    function changeAlign(a){
-        var ca = ccanv.data("align");
-        ca = a;
-        ccanv.attr("data-align", ca);
-        ccanv.data("align", ca);
-        editCanvas();
-    }
-
-
-    //Edit canvas
-    function editCanvas() {
-        var canvas = document.getElementById(currentId);
-        if(canvas==null){
-            alert("Przed edycją wybierz warstwę!");
-            return;
-        }
-        var ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        var text = ccanv.data("text");
-        var x = ccanv.data("x");
-        var y = ccanv.data("y");
-        var r = ccanv.data("r");
-        var align = ccanv.data("align");
-
-        var fontColor = ccanv.data("color");
-
-        var fsize = ccanv.data("size");
-        var font = ccanv.data("font");
-
-        ctx.font = fsize + "px " + font;
-        ctx.textAlign = align;
-        ctx.textBaseline = "middle";
-
-        ctx.rotate(r * Math.PI / 180);
-
-        ctx.fillStyle = fontColor;
-
-        
-        var lineheight = fsize;
-        var lines = text.split('\n');
-
-        for (var i = 0; i<lines.length; i++)
-            ctx.fillText(lines[i], x, y + (i*lineheight) );        
-
-    }
-
-    function resizeCanvas(id) {
-        var cW = $canvasy.width();
-        var cH = $canvasy.height();
-
-        $(".canvasy #" + id).attr("width", cW);
-        $(".canvasy #" + id).attr("height", cH);
-    }
-
-    //Wygenerowanie obrazka
-    var mirror = false;
-    function generated(){
-        if ($(".elements .row").length == 0) {
-            alert("Przez sprawdzeniem podglądu musisz utworzyć transfer!");
-            return;
-        }        
-        console.log("Generowanie transferu...");
-        
-        $(".image").html("");
-        
-        if(mirror){
-            $(".canvasy").css({
-                "transform": "scale(-1, 1)"
-            });              
-        }
-        
-        
-        html2canvas(document.querySelector(".canvasy")).then(canvas => {
-            document.querySelector(".image").append(canvas);
-            other();
-        });
-        
-        function other(){
-        if(mirror){
-            $(".canvasy").css({
-                "transform": "scale(1, 1)"
-            });              
-        }
-            
-            $(".image canvas").attr("id","downloadcanvas");
-            
-            var link = document.getElementById("downloadcanvas").toDataURL();
-            $(".image").append("<img src='"+link+"' alt='Transfer'/>");
-        }
-    }
-                              
-
+    $("#centerv").on("click",function(){
+        center(0,ycenter);
+    });
+    
+    $("#centerh").on("click",function(){
+        center(xcenter,0);
+    });
+    
+    
+    
+    
+//   POBIERANIE
     $("#download").click(function(){
         var anchor = document.getElementById("download");
         var today = new Date();

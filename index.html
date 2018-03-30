@@ -7,7 +7,7 @@
     <title>Decogenerator - v0.1</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/fonts.css">
-    <link href="https://fonts.googleapis.com/css?family=Baloo+Paaji|Coiny|Courgette|Gloria+Hallelujah|Luckiest+Guy|Pacifico|Poiret+One|Righteous|Shrikhand&subset=latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Paaji|Coiny|Courgette|Gloria+Hallelujah|Luckiest+Guy|Pacifico|Poiret+One|Righteous|Shrikhand|Berkshire+Swash|Comfortaa|Josefin+Sans|Meddon|Oleo+Script|Racing+Sans+One|Roboto+Slab|Rock+Salt&subset=latin-ext" rel="stylesheet">
     <link rel="icon" href="img/favicon.png">
 
     <script src="js/jquery-3.2.1.js"></script>
@@ -44,17 +44,15 @@
             <div class="main-menu">
                 <ul>
                     <li><a href="#">Strona główna</a></li>
-                    <li><a href="javascript:void(0);" onclick="startIntro();">Pomoc</a></li>
-                    <li><a href="ideas.html">Pomysły</a></li>
+                    <li><a href="ideas.html">Inspiracje</a></li>
                 </ul>
-                <div>
-                    <p></p>
-                </div>
             </div>
         </header>
 
         <main>
-
+            <div class="help">
+                <p><a href="javascript:void(0);" onclick="startIntro(false);">Jak korzystać z generatora <i class="fas fa-question-circle"></i></a></p>
+            </div>
             <div class="content">
                 <div class="canvasy">
                     <canvas id="grid" class="hidden"></canvas>
@@ -67,54 +65,63 @@
                     <button id="add" class="big"><i class="fas fa-plus-square"></i> Dodaj warstwę</button>
                 </div>
 
-                <div class="font">
-                    <label for="yt">Twój tekst</label>
-                    <textarea type="text" id="yt" value="Twój tekst"></textarea>
+                <div class="tohide">
+                    <div class="font">
+                        <label for="yt">Twój tekst</label>
+                        <textarea type="text" id="yt" value="Twój tekst" data-hj-whitelist></textarea>
 
-                    <p>Wyrównanie tekstu</p>
-                    <div id="aligns" class="row">
-                        <button class="align" data-align="left" data-tooltip="Wyrównanie tekstu do lewej"><i class="fas fa-align-left"></i></button>
-                        <button class="align" data-align="center" data-tooltip="Wyrównanie tekstu do środka"><i class="fas fa-align-center"></i></button>
-                        <button class="align" data-align="right" data-tooltip="Wyrównanie tekstu do prawej"><i class="fas fa-align-right"></i></button>
-                    </div>
+                        <p>Wyrównanie tekstu</p>
+                        <div id="aligns" class="row">
+                            <button class="align" data-align="left" data-tooltip="Wyrównanie tekstu do lewej"><i class="fas fa-align-left"></i></button>
+                            <button class="align" data-align="center" data-tooltip="Wyrównanie tekstu do środka"><i class="fas fa-align-center"></i></button>
+                            <button class="align" data-align="right" data-tooltip="Wyrównanie tekstu do prawej"><i class="fas fa-align-right"></i></button>
+                        </div>
 
-                    <p>Wybierz czionkę:</p>
-                    <select class="fonty" id="font">
+                        <p>Wybierz czionkę:</p>
+                        <select class="fonty" id="font">
                         <option selected class="Arimo" value="Arimo">[PL] Arimo</option>
                         <option class="Pacifico" value="Pacifico">[PL] Pacifico</option>
-                        <option class="GloriaHallelujah" value="Gloria Hallelujah">Gloria Hallelujah</option>
+                        <option class="GloriaHallelujah" value="Gloria Hallelujah" data-pl="no">Gloria Hallelujah</option>
                         <option class="Courgette" value="Courgette">[PL] Courgette</option>
                         <option class="Coiny" value="Coiny">[PL] Coiny</option>
                         <option class="Shrikhand" value="Shrikhand">[PL] Shrikhand</option>
                         <option class="Righteous" value="Righteous">[PL] Righteous</option>
                         <option class="PoiretOne" value="Poiret One">[PL] Poiret One</option>
-                        <option class="LuckiestGuy" value="Luckiest Guy">Luckiest Guy</option>
+                        <option class="LuckiestGuy" value="Luckiest Guy" data-pl="no">Luckiest Guy</option>
                         <option class="BalooPaaji" value="Baloo Paaji">[PL] Baloo Paaji</option>
                         <option class="GreatVibes" value="GreatVibes">[PL] GreatVibes</option>
                         <option class="Bellico" value="Bellico">[PL] Bellico</option>
                         <option class="Havana" value="Havana">[PL] Havana</option>
                         <option class="Jaapokki" value="Jaapokki">[PL] Jaapokki</option>
+                        <option class="JosefinSans" value="Josefin Sans">[PL] Josefin Sans</option>
+                        <option class="Meddon" value="Meddon">[PL] Meddon</option>
+                        <option class="OleoScript" value="Oleo Script" data-pl="no">Oleo Script</option>
+                        <option class="RacingSansOne" value="Racing Sans One">[PL] Racing Sans One</option>
+                        <option class="Comfortaa" value="Comfortaa">[PL] Comfortaa</option>
+                        <option class="RobotoSlab" value="Roboto Slab">[PL] Roboto Slab</option>
+                        <option class="RockSalt" value="Rock Salt">[PL] Rock Salt</option>
                     </select>
 
-                    <p>Wybierz kolor</p>
-                    <input type="color" id="color">
-                </div>
-                <p>Ustal pozycję tekstu</p>
-                <div class="position">
-                    <div class="row">
-                        <button id="rotl" data-tooltip="15&deg; w lewo" disabled><i class="fas fa-undo-alt"></i></button>
-                        <button id="up" data-tooltip="Element w górę"><i class="fas fa-caret-up"></i></button>
-                        <button id="rotr" data-tooltip="15&deg; w prawo" disabled><i class="fas fa-redo-alt"></i></button>
+                        <p>Wybierz kolor</p>
+                        <input type="color" id="color">
                     </div>
-                    <div class="row">
-                        <button id="left" data-tooltip="Element w lewo"><i class="fas fa-caret-left"></i></button>
-                        <button id="center" data-tooltip="Wyśrodkuj element"><i class="far fa-dot-circle"></i></button>
-                        <button id="right" data-tooltip="Element w prawo"><i class="fas fa-caret-right"></i></button>
-                    </div>
-                    <div class="row">
-                        <button id="scaleup" data-tooltip="Powiększ"><i class="fas fa-plus"></i></button>
-                        <button id="down" data-tooltip="Element w dół"><i class="fas fa-caret-down"></i></button>
-                        <button id="scaledown" data-tooltip="Zmniejsz"><i class="fas fa-minus"></i></button>
+                    <p>Ustal pozycję tekstu</p>
+                    <div class="position">
+                        <div class="row">
+                            <button id="centerv" data-tooltip="Wyśrodkuj w pionie"><i class="fas fa-arrows-alt-v"></i></button>
+                            <button id="up" data-tooltip="Element w górę"><i class="fas fa-arrow-alt-circle-up"></i></button>
+                            <button id="centerh" data-tooltip="Wyśrodkuj w poziomie"><i class="fas fa-arrows-alt-h"></i></button>
+                        </div>
+                        <div class="row">
+                            <button id="left" data-tooltip="Element w lewo"><i class="fas fa-arrow-alt-circle-left"></i></button>
+                            <button id="center" data-tooltip="Wyśrodkuj element"><i class="far fa-dot-circle"></i></button>
+                            <button id="right" data-tooltip="Element w prawo"><i class="fas fa-arrow-alt-circle-right"></i></button>
+                        </div>
+                        <div class="row">
+                            <button id="scaleup" data-tooltip="Powiększ"><i class="fas fa-plus"></i></button>
+                            <button id="down" data-tooltip="Element w dół"><i class="fas fa-arrow-alt-circle-down"></i></button>
+                            <button id="scaledown" data-tooltip="Zmniejsz"><i class="fas fa-minus"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,8 +137,8 @@
 
             <div class="todo">
                 <ul>
-                    <li><button id="wygeneruj" class="btndark">Podgląd</button></li>
-                    <li><button id="wygenerujmirr" class="btndark">Podgląd w lustrzanym odbiciu</button></li>
+                    <li><button id="wygeneruj" class="btndark">Podgląd (normalny)</button></li>
+                    <li><button id="wygenerujmirr" class="btndark">Podgląd (lustrzane odbicie)</button></li>
                     <li><a id="download" href="#" class="btn btndark">Zapisz na swoim komputerze</a></li>
                 </ul>
             </div>
@@ -157,7 +164,17 @@
     <script type="text/javascript" src="js/intro.min.js"></script>
 
     <script type="text/javascript">
-        function startIntro() {
+        //        var msg = new SpeechSynthesisUtterance();
+        //        function speak(text) {
+        //            msg.volume = 0.8; // 0 to 1
+        //            msg.rate = 1; // 0.1 to 10
+        //            msg.pitch = 1.2; //0 to 2  
+        //            msg.text = text;
+        //            window.speechSynthesis.speak(msg);
+        //        }
+
+        function startIntro(speech) {
+
 
             var intro = introJs();
             intro.setOption('showBullets', false);
@@ -168,9 +185,7 @@
             intro.setOption('scrollToElement', false);
             intro.setOption('exitOnOverlayClick', false);
             intro.setOptions({
-                steps: [{
-                        intro: "Witaj w krótkim oprowadzeniu po stronie!<br><br>Klikij Następny aby przejść do kolejnej podpowiedzi."
-                    },
+                steps: [
                     {
                         element: document.querySelector('main'),
                         intro: "To jest główne okno edytora.",
@@ -178,7 +193,7 @@
                     },
                     {
                         element: document.querySelectorAll('.controls')[0],
-                        intro: "To jest panel edycji tekstu",
+                        intro: "To jest panel edycji tekstu. <br><br> Narazie jest tu tylko przycisk ponieważ nie ma warstw.",
                         position: 'left'
                     },
                     {
@@ -193,7 +208,7 @@
                     },
                     {
                         element: document.querySelectorAll('#yt')[0],
-                        intro: "Po wybraniu warstwy pojawi się tekst, który aktualnie jest do niej przypisany.<br><br>Aby dodać swój tekst usuń obecny a następnie wpisz własny np: Dom.<br><br>Dodatkowo po zmianie tekstu zmieni się ono także w liście warstw.",
+                        intro: "Po wybraniu warstwy pojawi się tekst, który aktualnie jest do niej przypisany.<br><br>Aby dodać swój tekst usuń obecny a następnie wpisz własny na przykład: Dom.<br><br>Dodatkowo po zmianie tekstu zmieni się ono także w liście warstw.",
                         position: 'left'
                     },
                     {
@@ -203,7 +218,7 @@
                     },
                     {
                         element: document.querySelectorAll('#font')[0],
-                        intro: "Tutaj możesz zmienić czciokę tekstu. Kliknij na pole i wybierz z listy.<br><br>Czcionka mająca [PL] posiada polskie znaki. Jeśli znaki nie są widoczne trzeba przełączyć na inną i powrócić do poprzedniej",
+                        intro: "Tutaj możesz zmienić czcionkę tekstu. Kliknij na pole i wybierz z listy.<br><br>Czcionka mająca [PL] posiada polskie znaki. Jeśli znaki nie są widoczne trzeba przełączyć na inną i powrócić do poprzedniej",
                         position: 'left'
                     },
                     {
@@ -237,6 +252,14 @@
                 ]
             });
             intro.start();
+
+            //            if (speech) {
+            //                intro.onchange(function() {
+            //                    console.log(this);
+            //                    speak(this._introItems[this._currentStep].intro);
+            //                });
+            //                
+            //            }
         }
 
     </script>
@@ -259,19 +282,6 @@
 
     </script>
     <div id="google_translate_element"></div>
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'pl',
-                includedLanguages: 'de,en,pl,ru',
-                layout: google.translate.TranslateElement.FloatPosition.TOP_RIGHT
-            }, 'google_translate_element');
-        }
-
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-
 
 </body>
 
